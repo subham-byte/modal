@@ -1,7 +1,18 @@
 import React from 'react'
+import { useEffect } from 'react';
 import './Modal.css'
 
 const Modal = (props) => {
+
+    //such that the modal closes on pressing esc key.
+
+    useEffect(() => {
+        document.onkeydown = (evt) => {
+            if (evt.keyCode === 27) {
+                props.onClose();
+            }
+        };
+    })
 
     if(!props.show){
         return null;
@@ -9,13 +20,13 @@ const Modal = (props) => {
 
   return (
     <div>
-        <div className="modal">
-            <div className="modal_content">
+        <div className="modal" onClick={props.onClose}>
+            <div className="modal_content" onClick={e => e.stopPropagation()}>
                 <div className="modal_header">
-                    <h1 className="modal_title">Modal title</h1>
+                    <h1 className="modal_title">{props.title}</h1>
                 </div>
                 <div className="modal_body">
-                    This is modal content.
+                    {props.children}
                 </div>
                 <div className="modal_footer">
                     <button className='button' onClick={props.onClose}>Close</button>
